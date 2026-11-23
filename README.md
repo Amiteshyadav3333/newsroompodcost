@@ -1,6 +1,6 @@
-# 🎓 Voice AI Avatar (LiveKit + Synthesia)
+# 🎓 Newsroom Live Panel (LiveKit + Synthesia)
 
-A real-time, voice-only AI avatar you can talk to from the browser. You speak, the avatar listens, thinks and answers back out loud with a lip-synced video avatar, in a full-screen UI with no typing.
+A Hindi/Hinglish live panel with a broadcast-style studio, four configurable speakers, animated headline crawls, highlighted live captions, and voice controls. Speaker names and on-air roles can be changed in the setup panel and are saved in that browser.
 
 ## How it works
 
@@ -21,13 +21,14 @@ Browser (index.html)  ──token──►  Flask token server (server.py)
                 (joins the room, publishes video)
 ```
 
-- **Frontend** (`index.html`): full-screen avatar video, one "start" button, mic mute and end-call buttons.
+- **Frontend** (`index.html`): broadcast studio, four-speaker roster, scrolling headline bar, live caption/highlight strips, editable panelist names and roles, mic mute and end-call buttons.
 - **Token server** (`server.py`): a tiny Flask app that serves the page and issues short-lived LiveKit access tokens. Your LiveKit secret never reaches the browser.
 - **Agent** (`agent.py`): a LiveKit Agents worker that handles speech-to-text, generates the answer, speaks it, and drives the Synthesia avatar.
 
 ## Features
 
-- Voice-only conversation, full-screen avatar UI
+- Four-person Hindi/Hinglish news panel with a live video avatar and broadcast-style captions
+- Configurable panelist names and roles, saved in the browser
 - Hindi / Hinglish friendly (Deepgram `multi` language STT, Hindi TTS)
 - Custom Cartesia voice support
 - Three interchangeable "brains":
@@ -67,6 +68,9 @@ All configuration lives in `.env.local` (never committed). See `.env.example` fo
 | `LIVEKIT_API_SECRET` | yes | LiveKit API secret |
 | `SYNTHESIA_API_KEY` | yes | Synthesia workspace API key |
 | `SYNTHESIA_AVATAR_ID` | yes | Avatar **Interactive ID** (Avatars page, `•••` menu, *Copy Interactive ID*) |
+| `SYNTHESIA_AMITESH_AVATAR_ID` | no | Interactive ID for panelist 2 |
+| `SPEAKER_AVATAR_IDS` | no | Third and fourth avatar IDs, comma-separated in panel order |
+| `SPEAKER_TTS_VOICES` | no | Third and fourth Cartesia voice IDs, comma-separated in panel order |
 | `CARTESIA_API_KEY` | no | Needed only for a custom Cartesia voice |
 | `CARTESIA_VOICE_ID` | no | Your custom Cartesia voice ID (used together with `CARTESIA_API_KEY`) |
 | `TTS_MODEL` | no | LiveKit Inference TTS model, default `cartesia/sonic-3` |
@@ -132,7 +136,7 @@ The avatar will repeat what you said.
 .
 ├── agent.py            # LiveKit agent: STT, answer generation, TTS, Synthesia avatar
 ├── server.py           # Flask server: serves the UI and issues LiveKit tokens
-├── index.html          # Full-screen voice-only frontend
+├── index.html          # Newsroom panel frontend and live captions
 ├── requirements.txt    # Python dependencies
 ├── .env.example        # Template for your secrets (copy to .env.local)
 └── .gitignore
